@@ -1,43 +1,48 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-import static java.lang.Math.round;
 
 public class StartApp {
     public static void main(String[] args) {
-        ArrayList<Integer> persons = new ArrayList<>();
-        persons.add(5);
-        persons.add(40);
-        persons.add(55);
+        Scanner scan = new Scanner(System.in);
+        ArrayList<BigDecimal> persons = new ArrayList<>();
 
+        System.out.println("Dodaj wszystkie kwoty do rozliczenia:\nJeśli naciśniesz 0 pokaze sie wynik \n");
+        BigDecimal amount=new BigDecimal(scan.nextLine());
+        while (amount.compareTo(BigDecimal.ZERO)>0) {
+            persons.add(amount);
+            System.out.println("Dodaj następną kwotę");
+            amount=new BigDecimal(scan.nextLine());
+        }
         settlementOfAllPersons(persons);
     }
 
-    private static double wholeAmountDividedIntoOnePerson(ArrayList<Integer> persons) {
-        double wholeAmountDividedIntoOnePerson = 0;
-        for (int value : persons) wholeAmountDividedIntoOnePerson += value;
-        return wholeAmountDividedIntoOnePerson / persons.size();
+    private static BigDecimal wholeAmountDividedIntoOnePerson(ArrayList<BigDecimal> persons) {
+        BigDecimal wholeAmountDividedIntoOnePerson=BigDecimal.ZERO;
+        for (BigDecimal value : persons) wholeAmountDividedIntoOnePerson=wholeAmountDividedIntoOnePerson.add(value);
+
+        return wholeAmountDividedIntoOnePerson.divide(new BigDecimal(persons.size()),2, RoundingMode.HALF_UP);
     }
 
-    private static void amountToBeRefundedOrPaid(double wholeAmountDividedIntoOnePerson, int personToSettleThePayment) {
-        double amount = wholeAmountDividedIntoOnePerson - personToSettleThePayment;
+    private static void amountToBeRefundedOrPaid(BigDecimal wholeAmountDividedIntoOnePerson, BigDecimal personToSettleThePayment) {
+        BigDecimal amount = wholeAmountDividedIntoOnePerson.subtract(personToSettleThePayment);
         DecimalFormat df = new DecimalFormat("#.##");
-        if (amount > 0) {
-            System.out.println("Należy dopłacić: " + df.format(amount));
-        }
-        else if (amount < 0) {
-            System.out.println("Kwota do zwrotu dla Ciebie: " +df.format(Math.abs(amount)));
-        }
-        else {
-            System.out.println("Nie musisz ani dopłacać ani oczekiwać na zwrot");
+        if (amount.compareTo(BigDecimal.ZERO)>0) {
+            System.out.println("Osoba, która zapłaciła do tej pory "+personToSettleThePayment + " musi dopłacić: " + df.format(amount));
+        } else if (amount.compareTo(BigDecimal.ZERO)<0) {
+            System.out.println("Osobie, która zapłaciła do tej pory "+personToSettleThePayment + " nalezy zwrocic: " + df.format(amount.abs()));
+        } else {
+            System.out.println("Osoba, która zapłaciła do tej pory "+personToSettleThePayment + " nie musisz ani dopłacać ani oczekiwać na zwrot");
         }
     }
 
-    private static void settlementOfAllPersons( ArrayList<Integer> persons) {
-        double wholeAmountDividedIntoOnePerson = wholeAmountDividedIntoOnePerson(persons);
-        for (int value: persons){
-            amountToBeRefundedOrPaid(wholeAmountDividedIntoOnePerson,value);
+    private static void settlementOfAllPersons(ArrayList<BigDecimal> persons) {
+        BigDecimal wholeAmountDividedIntoOnePerson = wholeAmountDividedIntoOnePerson(persons);
+        for (BigDecimal value : persons) {
+            amountToBeRefundedOrPaid(wholeAmountDividedIntoOnePerson, value);
         }
     }
-
 }
