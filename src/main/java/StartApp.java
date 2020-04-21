@@ -8,23 +8,24 @@ import java.util.Scanner;
 public class StartApp {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        ArrayList<BigDecimal> persons = new ArrayList<>();
+        ArrayList<BigDecimal> people = new ArrayList<>();
 
         System.out.println("Dodaj wszystkie kwoty do rozliczenia:\nJeśli naciśniesz 0 pokaze sie wynik \n");
         BigDecimal amount=new BigDecimal(scan.nextLine());
         while (amount.compareTo(BigDecimal.ZERO)>0) {
-            persons.add(amount);
+            people.add(amount);
             System.out.println("Dodaj następną kwotę");
             amount=new BigDecimal(scan.nextLine());
         }
-        settlementOfAllPersons(persons);
+        settlementOfAllPeople(people);
     }
 
-    private static BigDecimal wholeAmountDividedIntoOnePerson(ArrayList<BigDecimal> persons) {
+    private static BigDecimal equallySplittedAmount(ArrayList<BigDecimal> people) {
         BigDecimal wholeAmountDividedIntoOnePerson=BigDecimal.ZERO;
-        for (BigDecimal value : persons) wholeAmountDividedIntoOnePerson=wholeAmountDividedIntoOnePerson.add(value);
-
-        return wholeAmountDividedIntoOnePerson.divide(new BigDecimal(persons.size()),2, RoundingMode.HALF_UP);
+        for (BigDecimal value : people) {
+            wholeAmountDividedIntoOnePerson=wholeAmountDividedIntoOnePerson.add(value);
+        }
+        return wholeAmountDividedIntoOnePerson.divide(new BigDecimal(people.size()),2, RoundingMode.HALF_UP);
     }
 
     private static void amountToBeRefundedOrPaid(BigDecimal wholeAmountDividedIntoOnePerson, BigDecimal personToSettleThePayment) {
@@ -39,9 +40,9 @@ public class StartApp {
         }
     }
 
-    private static void settlementOfAllPersons(ArrayList<BigDecimal> persons) {
-        BigDecimal wholeAmountDividedIntoOnePerson = wholeAmountDividedIntoOnePerson(persons);
-        for (BigDecimal value : persons) {
+    private static void settlementOfAllPeople(ArrayList<BigDecimal> people) {
+        BigDecimal wholeAmountDividedIntoOnePerson = equallySplittedAmount(people);
+        for (BigDecimal value : people) {
             amountToBeRefundedOrPaid(wholeAmountDividedIntoOnePerson, value);
         }
     }
