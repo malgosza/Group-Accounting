@@ -12,12 +12,17 @@ public class StartApp {
 
         System.out.println("Dodaj wszystkie kwoty do rozliczenia:\nJeśli naciśniesz 0 pokaze sie wynik \n");
         BigDecimal amount=new BigDecimal(scan.nextLine());
-        while (amount.compareTo(BigDecimal.ZERO)>0) {
-            people.add(amount);
-            System.out.println("Dodaj następną kwotę");
-            amount=new BigDecimal(scan.nextLine());
+        if (amount.compareTo(BigDecimal.ZERO)==0){
+            System.out.println("Brak osob do rozliczenia");
         }
-        settlementOfAllPeople(people);
+        else{
+            while (amount.compareTo(BigDecimal.ZERO)>0) {
+                people.add(amount);
+                System.out.println("Dodaj następną kwotę:");
+                amount=new BigDecimal(scan.nextLine());
+            }
+            settlementOfAllPeople(people);
+        }
     }
 
     private static BigDecimal equallySplittedAmount(ArrayList<BigDecimal> people) {
