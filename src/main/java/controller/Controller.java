@@ -1,14 +1,17 @@
 package controller;
 
-import model.AgeCategory;
-import model.Database;
-import model.EmploymentCategory;
-import model.Person;
+import model.*;
 import swing.FormEvent;
+
+import java.util.List;
 
 public class Controller {
 
     Database db= new Database();
+
+    public List<Person> getPeople(){
+        return  db.getPeople();
+    }
 
     public void addPerson(FormEvent ev){
         String name = ev.getName();
@@ -19,7 +22,7 @@ public class Controller {
         String taxID=ev.getTaxId();
         String gender = ev.getGender();
 
-        AgeCategory ageCategory;
+        AgeCategory ageCategory=null;
 
         switch (ageCatId){
             case 0:
@@ -29,7 +32,6 @@ public class Controller {
                 ageCategory=AgeCategory.adult;
                 break;
             case 2:
-            default:
                 ageCategory=AgeCategory.senior;
                 break;
         }
@@ -50,7 +52,22 @@ public class Controller {
             System.err.println(empCat);
         }
 
-        Person person= new Person(name, occupation, ageCategory, empCategory, isUs, taxID, gender);
+        Gender genderCat;
+
+        if (gender.equals("male")){
+            genderCat= Gender.male;
+        }
+        else {
+            genderCat=Gender.female;
+        }
+
+        Person person= new Person(name,
+                occupation,
+                ageCategory,
+                empCategory,
+                taxID,
+                isUs,
+                genderCat);
         db.addPerson(person);
     }
 }
