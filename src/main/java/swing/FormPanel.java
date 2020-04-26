@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class FormPanel extends JPanel {
 
@@ -38,6 +39,13 @@ public class FormPanel extends JPanel {
         citizenCheck=new JCheckBox();
         taxField= new JTextField(10);
         taxLabel=new JLabel("Tax ID: ");
+        okButton=new JButton("OK");
+
+        // Set up mnemonics
+        okButton.setMnemonic(KeyEvent.VK_C);
+
+        nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
+        nameLabel.setLabelFor(nameField);
 
         maleRadio=new JRadioButton("male");
         femaleRadio=new JRadioButton("female");
@@ -85,8 +93,6 @@ public class FormPanel extends JPanel {
         empCombo.setModel(empModel);
         empCombo.setSelectedIndex(0);
         empCombo.setEditable(true);
-
-        okButton=new JButton("OK");
 
         okButton.addActionListener(new ActionListener() {
             @Override
