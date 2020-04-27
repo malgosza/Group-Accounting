@@ -19,19 +19,7 @@ public class MainFrame extends JFrame {
 
         textPanel = new TextPanel();
         toolbar = new Toolbar(listaFormEventow, textPanel);
-        formPanel=new FormPanel();
-
-        formPanel.setFormListener(new FormListener() {
-            @Override
-            public void formEventOccurred(FormEvent e) {
-                String imie = e.getImie();
-                String kwota = e.getKwota();
-
-                textPanel.appendText(imie + " : " + kwota + "\n");
-                listaFormEventow.add(e);
-
-            }
-        });
+        formPanel=new FormPanel(listaFormEventow,textPanel);
 
         add(formPanel,BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);

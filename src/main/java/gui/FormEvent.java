@@ -1,18 +1,11 @@
 package gui;
 
-import java.util.EventObject;
-
-public class FormEvent extends EventObject {
+public class FormEvent{
 
     private String imie;
     private String kwota;
 
-    public FormEvent(Object source){
-        super(source);
-    }
-
-    public FormEvent(Object source, String imie, String kwota) {
-        super(source);
+    public FormEvent(String imie, String kwota) {
         this.imie=imie;
         this.kwota=kwota;
     }

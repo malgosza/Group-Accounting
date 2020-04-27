@@ -15,14 +15,16 @@ public class FormPanel extends JPanel {
     private JTextField kwotaField;
     private JButton dodajButton;
 
-    private FormListener formListener;
-    ArrayList<String> ludzie=new ArrayList<>();
-    ArrayList<String> pieniadze=new ArrayList<>();
+    ArrayList<FormEvent> listaFormEventow;
+    TextPanel textPanel;
 
-    public FormPanel() {
+    public FormPanel(ArrayList<FormEvent> lista, TextPanel text) {
         Dimension dim = getPreferredSize();
         dim.width = 250;
         setPreferredSize(dim);
+
+        this.listaFormEventow=lista;
+        this.textPanel=text;
 
         imieLabel = new JLabel("Imie: ");
         kwotaLabel = new JLabel("Kwota: ");
@@ -37,14 +39,10 @@ public class FormPanel extends JPanel {
                 String imie=imieField.getText();
                 String kwota=kwotaField.getText();
 
-                FormEvent ev = new FormEvent(this,imie,kwota);
+                FormEvent ev = new FormEvent(imie,kwota);
 
-
-                if (formListener!=null){
-                    formListener.formEventOccurred(ev);
-                    ludzie.add(imie);
-                    pieniadze.add(kwota);
-                }
+                textPanel.appendText(imie + " : " + kwota + "\n");
+                listaFormEventow.add(ev);
             }
         });
 
@@ -53,10 +51,6 @@ public class FormPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
 
         layoutComponents();
-    }
-
-    public void setFormListener(FormListener listener){
-        this.formListener=listener;
     }
 
     public void layoutComponents() {
