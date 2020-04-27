@@ -15,7 +15,7 @@ public class TextPanel extends JPanel {
         add(new JScrollPane(textArea), BorderLayout.CENTER);
     }
 
-    public void appendText(int sum) {
-        textArea.append(sum + "\n");
+    public void appendText(String text) {
+        textArea.append(text + "\n");
     }
 }

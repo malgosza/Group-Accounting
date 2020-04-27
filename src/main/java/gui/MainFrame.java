@@ -2,12 +2,16 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 
     private TextPanel textPanel;
     private Toolbar toolbar;
     private FormPanel formPanel;
+
+    ArrayList<String> ludzie=new ArrayList<>();
+    ArrayList<String> pieniadze=new ArrayList<>();
 
     public MainFrame() {
         super("Rozliczacz");
@@ -19,6 +23,17 @@ public class MainFrame extends JFrame {
         formPanel=new FormPanel();
 
         toolbar.setTextPanel(textPanel);
+
+        formPanel.setFormListener(new FormListener() {
+            @Override
+            public void formEventOccurred(FormEvent e) {
+                String imie = e.getImie();
+                String kwota = e.getKwota();
+
+                textPanel.appendText(imie + " : " + kwota + "\n");
+
+            }
+        });
 
         add(formPanel,BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);

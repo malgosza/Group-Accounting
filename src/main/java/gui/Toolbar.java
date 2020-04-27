@@ -6,9 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Toolbar extends JPanel implements ActionListener {
-    private JButton rozliczButton;
 
+    private JButton rozliczButton;
     private TextPanel textPanel;
+
 
     public Toolbar() {
         setBorder(BorderFactory.createEtchedBorder());
@@ -24,15 +25,13 @@ public class Toolbar extends JPanel implements ActionListener {
     public void setTextPanel(TextPanel textPanel) {
         this.textPanel = textPanel;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton clicked = (JButton) e.getSource();
 
         if (clicked == rozliczButton) {
-            int a =3;
-            int b=4;
-            textPanel.appendText(a+b);
+            textPanel.appendText("Do poprawy");
         }
     }
 }
