@@ -5,7 +5,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class FormPanel extends JPanel {
 
@@ -15,16 +14,12 @@ public class FormPanel extends JPanel {
     private JTextField kwotaField;
     private JButton dodajButton;
 
-    ArrayList<FormEvent> listaFormEventow;
-    TextPanel textPanel;
 
-    public FormPanel(ArrayList<FormEvent> lista, TextPanel text) {
+    public FormPanel(MainFrame.DodajListener listener) {
         Dimension dim = getPreferredSize();
         dim.width = 250;
         setPreferredSize(dim);
 
-        this.listaFormEventow=lista;
-        this.textPanel=text;
 
         imieLabel = new JLabel("Imie: ");
         kwotaLabel = new JLabel("Kwota: ");
@@ -41,8 +36,7 @@ public class FormPanel extends JPanel {
 
                 FormEvent ev = new FormEvent(imie,kwota);
 
-                textPanel.appendText(imie + " : " + kwota + "\n");
-                listaFormEventow.add(ev);
+                listener.click(ev);
             }
         });
 

@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
@@ -18,8 +20,8 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         textPanel = new TextPanel();
-        toolbar = new Toolbar(listaFormEventow, textPanel);
-        formPanel=new FormPanel(listaFormEventow,textPanel);
+        toolbar = new Toolbar(new RozliczListener());
+        formPanel=new FormPanel(new DodajListener());
 
         add(formPanel,BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);
@@ -29,6 +31,22 @@ public class MainFrame extends JFrame {
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public class RozliczListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Integer sizeL = listaFormEventow.size();
+            textPanel.appendText(sizeL.toString());
+        }
+    }
+
+    public class DodajListener{
+        public void click(FormEvent event) {
+            textPanel.appendText(event.getImie() + " : " + event.getKwota() + "\n");
+            listaFormEventow.add(event);
+        }
     }
 
     public static void main(String[] args) {
