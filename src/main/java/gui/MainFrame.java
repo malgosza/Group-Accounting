@@ -7,7 +7,7 @@ public class MainFrame extends JFrame {
 
     private TextPanel textPanel;
     private Toolbar toolbar;
-//    private JButton button;
+    private FormPanel formPanel;
 
     public MainFrame() {
         super("Rozliczacz");
@@ -16,9 +16,11 @@ public class MainFrame extends JFrame {
 
         toolbar = new Toolbar();
         textPanel = new TextPanel();
+        formPanel=new FormPanel();
 
         toolbar.setTextPanel(textPanel);
 
+        add(formPanel,BorderLayout.WEST);
         add(toolbar, BorderLayout.NORTH);
         add(textPanel, BorderLayout.CENTER);
 

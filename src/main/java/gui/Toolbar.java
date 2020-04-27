@@ -30,7 +30,9 @@ public class Toolbar extends JPanel implements ActionListener {
         JButton clicked = (JButton) e.getSource();
 
         if (clicked == rozliczButton) {
-            textPanel.appendText(1 + 3);
+            int a =3;
+            int b=4;
+            textPanel.appendText(a+b);
         }
     }
 }
