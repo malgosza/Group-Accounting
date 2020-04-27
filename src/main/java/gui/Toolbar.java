@@ -4,16 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Toolbar extends JPanel implements ActionListener {
 
     private JButton rozliczButton;
     private TextPanel textPanel;
+    private ArrayList<FormEvent> listaFormEventow;
 
-
-    public Toolbar() {
+    public Toolbar(ArrayList<FormEvent> formEvents, TextPanel textPanel) {
         setBorder(BorderFactory.createEtchedBorder());
         rozliczButton = new JButton("Rozlicz");
+
+        this.listaFormEventow=formEvents;
+        this.textPanel=textPanel;
 
         rozliczButton.addActionListener(this);
 
@@ -22,16 +26,14 @@ public class Toolbar extends JPanel implements ActionListener {
         add(rozliczButton);
     }
 
-    public void setTextPanel(TextPanel textPanel) {
-        this.textPanel = textPanel;
-    }
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton clicked = (JButton) e.getSource();
 
+        Integer sizeL=listaFormEventow.size();
         if (clicked == rozliczButton) {
-            textPanel.appendText("Do poprawy");
+
+            textPanel.appendText(sizeL.toString());
         }
     }
 }

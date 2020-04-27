@@ -10,19 +10,16 @@ public class MainFrame extends JFrame {
     private Toolbar toolbar;
     private FormPanel formPanel;
 
-    ArrayList<String> ludzie=new ArrayList<>();
-    ArrayList<String> pieniadze=new ArrayList<>();
+    ArrayList<FormEvent> listaFormEventow=new ArrayList<>();
 
     public MainFrame() {
         super("Rozliczacz");
 
         setLayout(new BorderLayout());
 
-        toolbar = new Toolbar();
         textPanel = new TextPanel();
+        toolbar = new Toolbar(listaFormEventow, textPanel);
         formPanel=new FormPanel();
-
-        toolbar.setTextPanel(textPanel);
 
         formPanel.setFormListener(new FormListener() {
             @Override
@@ -31,6 +28,7 @@ public class MainFrame extends JFrame {
                 String kwota = e.getKwota();
 
                 textPanel.appendText(imie + " : " + kwota + "\n");
+                listaFormEventow.add(e);
 
             }
         });
