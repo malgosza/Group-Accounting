@@ -13,6 +13,7 @@ public class FormPanel extends JPanel {
     private JTextField imieField;
     private JTextField kwotaField;
     private JButton dodajButton;
+    private JButton usunButton;
 
 
     public FormPanel(MainFrame.DodajListener listener) {
@@ -27,6 +28,7 @@ public class FormPanel extends JPanel {
         kwotaField = new JTextField(10);
 
         dodajButton = new JButton("Dodaj");
+        usunButton=new JButton("Wyczysc Panel");
 
         dodajButton.addActionListener(new ActionListener() {
             @Override
@@ -37,6 +39,15 @@ public class FormPanel extends JPanel {
                 FormEvent ev = new FormEvent(imie,kwota);
 
                 listener.click(ev);
+            }
+        });
+
+        usunButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                imieField.setText("");
+                kwotaField.setText("");
+                listener.usun();
             }
         });
 
@@ -98,5 +109,16 @@ public class FormPanel extends JPanel {
         gc.anchor=GridBagConstraints.FIRST_LINE_START;
         gc.insets=new Insets(0,0,0,0);
         add(dodajButton,gc);
+
+        /////////// Next row /////////////////
+        gc.gridy++;
+
+        gc.weightx=1;
+        gc.weighty=2.0;
+
+        gc.gridx=1;
+        gc.anchor=GridBagConstraints.FIRST_LINE_START;
+        gc.insets=new Insets(0,0,0,0);
+        add(usunButton,gc);
     }
 }
