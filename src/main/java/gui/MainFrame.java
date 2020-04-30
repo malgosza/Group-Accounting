@@ -1,5 +1,7 @@
 package gui;
 
+import logic.SettlementDirection;
+import logic.SettlementResult;
 import logic.StartApp;
 
 import javax.swing.*;
@@ -7,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
@@ -41,39 +42,37 @@ public class MainFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-//            Integer sizeL = listaFormEventow.size();
-//            textPanel.appendText(sizeL.toString());
-//            textPanel.appendText(listaFormEventow.get(1).getImie().toString());
-
             rozliczanieKwoty();
         }
 
         public void rozliczanieKwoty() {
             ArrayList<BigDecimal> kwoty = new ArrayList<>();
-            for (int i = 0; i < listaFormEventow.size(); i++) {
-                kwoty.add(BigDecimal.valueOf(Long.parseLong(listaFormEventow.get(i).getKwota())));
+
+//            List<BigDecimal> collect = listaFormEventow.stream()
+//                    .map(FormEvent::getKwota)
+//                    .map(BigDecimal::new)
+//                    .collect(Collectors.toList());
+
+            for (FormEvent formEvent : listaFormEventow) {
+                kwoty.add(new BigDecimal(formEvent.getKwota()));
             }
 
-//            StartApp.settlementOfAllPeople(kwoty);
-            textPanel.appendText("Srednia kwota na jedna osobe: " + StartApp.equallySplittedAmount(kwoty).toString() + "\n");
-            for (int i = 0; i < listaFormEventow.size(); i++) {
-                amountToBeRefundedOrPaid(StartApp.equallySplittedAmount(kwoty), listaFormEventow.get(i));
+            BigDecimal sredniaKwota = StartApp.equallySplittedAmount(kwoty);
+            textPanel.appendText("Srednia kwota na jedna osobe: " + sredniaKwota.toString() + "\n");
+            for (FormEvent event : listaFormEventow) {
+                SettlementResult result = StartApp.amountToBeRefundedOrPaid(sredniaKwota, new BigDecimal(event.getKwota()));
+                if (result.direction == SettlementDirection.zaplacilaZaDuzo) {
+                    textPanel.appendText("Zwrot " + result.amount + " dla " + event.getImie());
+                }
+                else if(result.direction==SettlementDirection.niedoplacila){
+                    textPanel.appendText(event.getImie()+" musi doplacic "+result.amount);
+                }
+                else {
+                    textPanel.appendText(event.getImie()+" jest na czysto");
+                }
             }
         }
 
-        public void amountToBeRefundedOrPaid(BigDecimal wholeAmountDividedIntoOnePerson, FormEvent event) {
-            BigDecimal amount = wholeAmountDividedIntoOnePerson.subtract(BigDecimal.valueOf(Long.parseLong(event.getKwota())));
-            DecimalFormat df = new DecimalFormat("#.##");
-            if (amount.compareTo(BigDecimal.ZERO) > 0) {
-                textPanel.appendText(event.getImie() + " musi dopłacić: " + df.format(amount)
-                );
-            } else if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                textPanel.appendText(event.getImie() + " -> nalezy jej/jemu zwrocic: " + df.format(amount.abs())
-                );
-            } else {
-                textPanel.appendText(event.getImie() + " nie musisz ani dopłacać ani oczekiwać na zwrot");
-            }
-        }
     }
 
     public class DodajListener {
@@ -87,7 +86,6 @@ public class MainFrame extends JFrame {
             textPanel.clearText();
         }
     }
-
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {
