@@ -84,6 +84,7 @@ public class MainFrame extends JFrame {
 
         public void usun() {
             listaFormEventow.clear();
+            textPanel.clearText();
         }
     }
 
